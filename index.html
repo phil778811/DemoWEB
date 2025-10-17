@@ -6,6 +6,28 @@
 <title>Demo 點餐範例（可選配料）</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --accent:#7c3aed;
+  --muted: rgba(255,255,255,0.6);
+  --radius:14px;
+  --max-width:1100px;
+}
+body{margin:0;font-family:Inter,system-ui;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:var(--bg);color:#e6eef8;}
+.wrap{max-width:var(--max-width);margin:48px auto;padding:0 20px;}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:grid;place-items:center;font-weight:800}
+.btn{padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#06b6d4);border:none;color:white;font-weight:700;cursor:pointer;margin-top:12px;}
+.card{background:var(--card);padding:16px;border-radius:var(--radius);margin-bottom:16px;}
+.card input[type=number]{width:50px;text-align:center;border-radius:6px;border:none;}
+.card .extras{margin-top:8px;}
+.card .extras label{display:block;font-size:14px;}
+.hidden{display:none;}
+textarea{width:100%;border-radius:10px;padding:8px;margin-top:6px;background:rgba(255,255,255,0.05);border:none;color:#fff;}
+</style
 </head>
 <body>
 <div class="wrap">

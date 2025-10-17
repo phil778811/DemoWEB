@@ -5,28 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demo 點餐範例（可選配料）</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f1724;
-  --card:#0b1220;
-  --accent:#7c3aed;
-  --muted: rgba(255,255,255,0.6);
-  --radius:14px;
-  --max-width:1100px;
-}
-body{margin:0;font-family:Inter,system-ui;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:var(--bg);color:#e6eef8;}
-.wrap{max-width:var(--max-width);margin:48px auto;padding:0 20px;}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:grid;place-items:center;font-weight:800}
-.btn{padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#06b6d4);border:none;color:white;font-weight:700;cursor:pointer;margin-top:12px;}
-.card{background:var(--card);padding:16px;border-radius:var(--radius);margin-bottom:16px;}
-.card input[type=number]{width:50px;text-align:center;border-radius:6px;border:none;}
-.card .extras{margin-top:8px;}
-.card .extras label{display:block;font-size:14px;}
-.hidden{display:none;}
-textarea{width:100%;border-radius:10px;padding:8px;margin-top:6px;background:rgba(255,255,255,0.05);border:none;color:#fff;}
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrap">
@@ -56,86 +35,6 @@ textarea{width:100%;border-radius:10px;padding:8px;margin-top:6px;background:rgb
 
 </div>
 
-<script>
-const menuItems = [
-  {name:'牛肉飯', price:120, extras:[{name:'加蛋',price:10},{name:'加起司',price:15},{name:'多青菜',price:5}]},
-  {name:'雞腿飯', price:100, extras:[{name:'加蛋',price:10},{name:'多醬汁',price:5}]},
-  {name:'排骨飯', price:110, extras:[{name:'加蛋',price:10},{name:'加辣',price:5}]},
-  {name:'珍珠奶茶', price:50, extras:[{name:'去冰',price:0},{name:'少糖',price:0}]}
-];
-
-const menuDiv = document.getElementById('menu');
-
-menuItems.forEach((item,idx)=>{
-  const card=document.createElement('div');
-  card.className='card';
-  let extrasHtml='';
-  if(item.extras && item.extras.length>0){
-    extrasHtml='<div class="extras">'+item.extras.map((ex,eidx)=>`<label><input type="checkbox" data-eidx="${eidx}" data-idx="${idx}"> ${ex.name} ${ex.price>0?`(+${ex.price})`:''}</label>`).join('')+'</div>';
-  }
-  card.innerHTML=`<div><strong>${item.name}</strong> ($${item.price})</div>
-                  <div>份數: <input type="number" min="0" max="10" value="0" data-idx="${idx}"></div>`+extrasHtml;
-  menuDiv.appendChild(card);
-});
-
-function updateTotal(){
-  let total=0;
-  menuItems.forEach((item,idx)=>{
-    const qtyInput = document.querySelector('input[type=number][data-idx="'+idx+'"]');
-    let qty = parseInt(qtyInput.value)||0;
-    let extrasTotal=0;
-    const checkedExtras = document.querySelectorAll('input[type=checkbox][data-idx="'+idx+'"]:checked');
-    checkedExtras.forEach(chk=>{
-      const eidx=parseInt(chk.dataset.eidx);
-      extrasTotal += item.extras[eidx].price;
-    });
-    total += (item.price + extrasTotal) * qty;
-  });
-  document.getElementById('total').textContent = total;
-}
-
-document.querySelectorAll('input[type=number]').forEach(i=>i.addEventListener('input', updateTotal));
-document.querySelectorAll('input[type=checkbox]').forEach(c=>c.addEventListener('change', updateTotal));
-
-// 下一步
-document.getElementById('nextStep').addEventListener('click', ()=>{
-  const summaryDiv = document.getElementById('summary');
-  summaryDiv.innerHTML='';
-  let total=0;
-  menuItems.forEach((item,idx)=>{
-    const qtyInput=document.querySelector('input[type=number][data-idx="'+idx+'"]');
-    const qty=parseInt(qtyInput.value)||0;
-    if(qty>0){
-      const checkedExtras = document.querySelectorAll('input[type=checkbox][data-idx="'+idx+'"]:checked');
-      const extrasNames = [...checkedExtras].map(chk=>item.extras[parseInt(chk.dataset.eidx)].name);
-      const subTotal=(item.price + extrasNames.reduce((acc,n)=>{
-        const ex=item.extras.find(e=>e.name===n);
-        return acc+(ex?ex.price:0);
-      },0)) * qty;
-      total+=subTotal;
-      const div=document.createElement('div');
-      div.textContent=`${item.name} x ${qty}` + (extrasNames.length>0?` [${extrasNames.join(', ')}]`:'') + ` = $${subTotal}`;
-      summaryDiv.appendChild(div);
-    }
-  });
-  const totalDiv=document.createElement('div');
-  totalDiv.innerHTML=`<strong>總金額: $${total}</strong>`;
-  summaryDiv.appendChild(totalDiv);
-  document.getElementById('step1').classList.add('hidden');
-  document.getElementById('step2').classList.remove('hidden');
-});
-
-document.getElementById('backBtn').addEventListener('click', ()=>{
-  document.getElementById('step2').classList.add('hidden');
-  document.getElementById('step1').classList.remove('hidden');
-});
-
-document.getElementById('copyBtn').addEventListener('click', ()=>{
-  const notes=document.getElementById('notes').value;
-  const summaryText=[...document.getElementById('summary').children].map(c=>c.textContent).join('\n');
-  navigator.clipboard.writeText(summaryText + (notes? '\n備註: '+notes : ''));
-  alert('已複製餐單到剪貼簿，可貼到 Line 或其他平台');
-});
-</script>
+<script src="Script/my-script.js"></script>
 </body>
 </html>
